@@ -6,56 +6,12 @@
 body {
     font: 12px/18px Arial, sans-serif;
     width: 100%;
-    background: url(/resource/img/Заставка.jpg) top center no-repeat
-}
-
-.wrapper {
-    width: 1000px;
-    margin: 0 auto;
-}
-
-.header {
-    width: 1000px;
-    height: 150px;
-    background: url(/resource/img/logos.png);
-}
-
-.content {
-    width: 1000px;
-    height: 600px;
-    background: #fff;
-}
-
-.footer {
-    height: 50px;
-    background: #BFF08E;
-}
-
-.menu {
-    float: left;
-    display: inline-block;
-    padding: 10px;
-    color: white;
-    width: 200px;
-    height: 20px;
-    font-size: 20px;
-    margin: 1px;
-    background: #718395;
-}
-
-.menu:hover {
-    opacity: 0.5;
-    cursor: pointer;
-}
-
-.MenuHead {
-    width: 1000px;
-    height: 50px;
+    background: url(/resource/img/Заставка.jpg) top center no-repeat;
 }
 
 a {
-    color: white;
-    font-weight: bold;
+    color: #fff;
+    font-weight: bold
 }
 
 input[type=text], input[type=password], input[type=email] {
@@ -66,11 +22,10 @@ input[type=text], input[type=password], input[type=email] {
 }
 
 input[type=submit], input[type=reset] {
-    color: white;
+    color: #fff;
     text-decoration: none;
     background: #D44B38;
-    height: 25px;
-    padding: 5px;
+    padding: 8px;
     border: 1px solid #A83B2D;
 }
 
@@ -79,36 +34,75 @@ input[type=submit]:hover, input[type=reset]:hover {
 }
 
 select {
-    width: 100px;
-    height: 20px;
+    height: 30px;
     margin-bottom: 5px;
 }
 
+.wrapper {
+    width: 1000px;
+    margin: 0 auto;
+}
+
+.header {
+    width: 1000px;
+    height: 80px;
+}
+
+.content {
+    width: 1000px;
+    height: 500px;
+    background: #fff;
+}
+
+.MenuHead {
+    width: 1000px;
+    height: 60px;
+}
+
+.Menu {
+    float: left;
+    display: inline-block;
+    padding: 10px;
+    width: 200px;
+    height: 20px;
+    font-size: 20px;
+    margin: 1px;
+    background: #718395;
+}
+
+.Menu:hover {
+    opacity: 0.5;
+    cursor: pointer;
+}
+
 .Page {
-    padding: 15px;
+    padding: 20px;
+}
+
+.footer {
+    height: 50px;
+    background: #718395;
 }
 
 .MessageBlock {
     border: 1px solid #A83B2D;
     background: #D44B38;
-    padding: 20px;
-}
-
-.p {
-    padding: 5px;
-}
-
-.capdiv {
-width: 215px;
-    height: 30px;
+    padding: 10px;
+    color: #fff;
 }
 
 .capinp {
-    max-width: 85px;
+    max-width: 80px;
 }
 
 .capimg {
     width: 110px;
     height: 30px;
     float: right;
+    order: 1px solid #A83B2D;
+}
+
+.capdiv {
+    width: 215px;
+    height: 30px;
 }

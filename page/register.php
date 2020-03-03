@@ -26,7 +26,7 @@
                     </select>
                     <div class="capdiv"><input type="text" class="capinp" name="captcha" placeholder="Капча"
                                                maxlength="10" pattern="[0-9]{1,5}" title="Только цифры." required>
-                        <img src="/resource/captcha.php" class="capimg" alt="Каптча">
+                        <img src="resource/captcha.php" class="capimg" alt="Каптча">
                     </div>
                     <br><input type="submit" name="enter" value="Регистрация"> <input type="reset" value="Очистить">
                 </form>

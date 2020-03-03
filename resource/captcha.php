@@ -5,7 +5,7 @@ $_SESSION['captcha'] = md5($Random);
 $im = imagecreatetruecolor(110, 30);
 imagefilledrectangle($im, 0, 0, 110, 30, imagecolorallocate($im, 212, 75, 56));
 imagettftext($im, 40, 0, 15, 23,
-    imagecolorallocate($im, 255, 255, 255), 'font.ttf', $Random);
+    imagecolorallocate($im, 255, 255, 255), '../resource/font.ttf', $Random);
 header('Expires: Wed, 1 Jan 1997 00:00:00 GMT');
 header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
 header('Cache-Control: no-store, no-cache, must-revalidate');

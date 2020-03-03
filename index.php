@@ -1,5 +1,5 @@
 <?php
-include_once 'config.php';
+include_once 'setting.php';
 
 session_start();
 $CONNECT = mysqli_connect(HOST, USER, PASS, DB);
@@ -12,10 +12,8 @@ if ($_SERVER['REQUEST_URI'] == '/') {
     $URL_Parts = explode('/', trim($URL_Path, ' /'));
     $Page = array_shift($URL_Parts);
     $Module = array_shift($URL_Parts);
-
     if (!empty($Module)) {
         $Param = array();
-
         for ($i = 0; $i < count($URL_Parts); $i++) {
             $Param[$URL_Parts[$i]] = $URL_Parts[++$i];
         }
@@ -23,81 +21,73 @@ if ($_SERVER['REQUEST_URI'] == '/') {
 }
 
 if ($Page == 'index') {
-    include_once 'page/index.php';
-} elseif ($Page == 'login') {
-    include_once 'page/login.php';
-} elseif ($Page == 'register') {
-    include_once 'page/register.php';
-} elseif ($Page == 'account') {
-    include_once 'forms/account.php';
+    include('page/index.php');
+} else if ($Page == 'login') {
+    include('page/login.php');
+} else if ($Page == 'register') {
+    include('page/register.php');
+} else if ($Page == 'account') {
+    include('form/account.php');
 }
 
-function MessageSend($p1, $p2)
+function MessageSend($p1, $p2, $p3 = '')
 {
     if ($p1 == 1) {
-        $p1 = 'Error';
-    } elseif ($p1 == 2) {
-        $p1 = 'Help';
-    } elseif ($p1 == 3) {
-        $p1 = 'Information';
+        $p1 = 'Ошибка';
+    } else if ($p1 == 2) {
+        $p1 = 'Подсказка';
+    } else if ($p1 == 3) {
+        $p1 = 'Информация';
     }
-
-    $_SESSION['messedg'] = '<div class="MessageBlock"><b>' . $p1 . '</b>: ' . $p2 . '</div>';
-
-    exit(header("Location: {$_SERVER['HTTP_REFERER']}"));
+    $_SESSION['message'] = '<div class="MessageBlock"><b>' . $p1 . '</b>: ' . $p2 . '</div>';
+    if ($p3) {
+        $_SERVER['HTTP_REFERER'] = $p3;
+    }
+    exit(header('Location: ' . $_SERVER['HTTP_REFERER']));
 }
+
 
 function MessageShow()
 {
-    if ($_SESSION['messedg']) {
-        $Messedg = $_SESSION['messedg'];
-
-        echo $Messedg;
-
-        $_SESSION['messedg'] = array();
+    if ($_SESSION['message']) {
+        $Message = $_SESSION['message'];
     }
+    echo $Message;
+    $_SESSION['message'] = array();
 }
 
-
-function GenPass($p1, $p2)
-{
-    return md5('YourNameAndLogin' . md5('123' . $p1 . '951') . md5('357' . $p2 . '987'));
-}
 
 function FormChars($p1)
 {
     return nl2br(htmlspecialchars(trim($p1), ENT_QUOTES), false);
 }
 
+
+function GenPass($p1, $p2)
+{
+    return md5('DARKSOUL' . md5('321' . $p1 . '123') . md5('678' . $p2 . '890'));
+}
+
+
 function Head($p1)
 {
-    echo '<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8"/>
-    <title>' . $p1 . '</title>
-    <meta name="keywords" content=""/>
-    <meta name="description" content=""/>
-    <link href="/resource/style.css" rel="stylesheet">
-</head>';
+    echo '<!DOCTYPE html><html><head><meta charset="utf-8" /><title>'
+         . $p1 . '</title><meta name="keywords" content="" />
+          <meta name="description" content="" />
+          <link href="resource/style.css" rel="stylesheet"></head>';
 }
+
 
 function Menu()
 {
-    echo '<div class="MenuHead">
-            <a href="/">
-                <div class="menu">Home page</div>
-            </a>
-            <a href="/register">
-                <div class="menu">Page registration</div>
-            </a>
-            <a href="/login">
-                <div class="menu">Entry</div>
-            </a>
-        </div>';
+    echo '<div class="MenuHead"><a href="/"><div class="Menu">Главная</div></a>
+          <a href="/register"><div class="Menu">Регистрация</div></a>
+          <a href="/login"><div class="Menu">Вход</div></a></div>';
 }
 
 function Footer()
 {
     echo '<footer class="footer"><h3 class="Page">Dark Soul Corporation &reg;</h3></footer>';
 }
+
+?>

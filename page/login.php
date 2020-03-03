@@ -1,25 +1,27 @@
 <?php
 if ($_POST['enter']) {
-    echo 'Inquiry on login ...';
-    exit();
+    echo 'Запрос...';
+    exit;
 }
-Head('Entry');
-?>
+Head('Вход') ?>
 <body>
-<div class="wrapper">
-    <div class="header"></div>
-    <div class="content">
-        <?php Menu(); ?>
-        <div class="Page">
-            <form method="post" action="/login">
-                <br/><input type="text" name="login" placeholder="Login" required>
-                <br/><input type="password" name="password" placeholder="Password" required>
-                <br/><br/><input type="submit" name="enter" value="Login">
-                <input type="reset" value="Clear">
-            </form>
+    <div class="wrapper">
+        <div class="header"></div>
+        <div class="content">
+            <?php
+            Menu();
+            MessageShow()
+            ?>
+            <div class="Page">
+                <form method="POST" action="/login">
+                    <br><input type="text" name="login" placeholder="Логин" required>
+                    <br><input type="password" name="password" placeholder="Пароль" required>
+                    <br><br><input type="submit" name="enter" value="Вход">
+                    <input type="reset" value="Очистить">
+                </form>
+            </div>
         </div>
+        <?php Footer() ?>
     </div>
-    <?php Footer(); ?>
-</div>
 </body>
 </html>

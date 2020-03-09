@@ -21,11 +21,11 @@ if ($Module == 'register' and $_POST['enter']) {
     if ($Row['email']) {
         exit('E-Mail <b>' . $_POST['email'] . '</b> уже используеться.');
     }
-    mysqli_query($CONNECT, "INSERT INTO `users`  VALUES ('', '$_POST[login]', '$_POST[password]', 
+    mysqli_query($CONNECT, "INSERT INTO `users` VALUES (`id`, '$_POST[login]', '$_POST[password]', 
     '$_POST[name]', NOW(), '$_POST[email]', $_POST[country], 0, 0)");
     $Code = substr(base64_encode($_POST['email']), 0, -1);
     mail($_POST['email'], 'Регистрация на сайте Dark Soul Corporation &reg;',
-        'Ссылка для активации: http://http://cleveralexpetrov.zzz.com.ua/account/activate/code/' .
+        'Ссылка для активации: http://dz.local/account/activate/code/' .
         substr($Code, -5) . substr($Code, 0, -5), 'From: Dark Soul Corporation &reg;');
     MessageSend(3, 'Регистрация акаунта успешно завершена. 
         На указанный E-mail адрес <b>' . $_POST['email'] . '</b> отправленно письмо с подтверждением регистрации.');
@@ -43,4 +43,3 @@ if ($Module == 'register' and $_POST['enter']) {
         MessageSend(1, 'E-mail адрес <b>' . $_SESSION['USER_ACTIVE_EMAIL'] . '</b> уже подтвержден.', '/login');
     }
 }
-?>

@@ -14,4 +14,3 @@ header('Pragma: no-cache');
 header('Content-type: image/gif');
 imagegif($im);
 imagedestroy($im);
-?>

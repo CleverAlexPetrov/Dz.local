@@ -90,4 +90,3 @@ function Footer()
     echo '<footer class="footer"><h3 class="Page">Dark Soul Corporation &reg;</h3></footer>';
 }
 
-?>

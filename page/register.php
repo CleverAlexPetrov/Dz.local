@@ -1,11 +1,11 @@
-<?php Head('Регистрация') ?>
+<?php Head('Регистрация'); ?>
 <body>
     <div class="wrapper">
         <div class="header"></div>
         <div class="content">
             <?php
             Menu();
-            MessageShow()
+            MessageShow();
             ?>
             <div class="Page">
                 <form method="POST" action="/account/register">
@@ -15,7 +15,7 @@
                     <br><input type="password" name="password" placeholder="Пароль" maxlength="15"
                                pattern="[A-Za-z-0-9]{5,15}" title="Не менее 5 и неболее 15 латынских символов или цифр."
                                required>
-                    <br><input type="text" name="name" placeholder="Имя" maxlength="10" pattern="[А-Яа-яЁё]{4,10}"
+                    <br><input type="text" name="name" placeholder="Имя" maxlength="10" pattern="[A-Za-z-0-9]{4,10}"
                                title="Не менее 4 и неболее 10 латынских символов или цифр." required>
                     <br><select size="1" name="country">
                         <option value="0">Страна...</option>

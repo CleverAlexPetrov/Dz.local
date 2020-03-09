@@ -72,7 +72,7 @@ function GenPass($p1, $p2)
 function Head($p1)
 {
     echo '<!DOCTYPE html><html><head><meta charset="utf-8" /><title>'
-         . $p1 . '</title><meta name="keywords" content="" />
+        . $p1 . '</title><meta name="keywords" content="" />
           <meta name="description" content="" />
           <link href="resource/style.css" rel="stylesheet"></head>';
 }
@@ -90,4 +90,3 @@ function Footer()
     echo '<footer class="footer"><h3 class="Page">Dark Soul Corporation &reg;</h3></footer>';
 }
 
-?>

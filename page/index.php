@@ -1,17 +1,17 @@
-<?php Head('Главная страница') ?>
+<?php Head('Главная страница'); ?>
     <body>
         <div class="wrapper">
             <div class="header"></div>
             <div class="content">
                 <?php
                 Menu();
-                MessageShow()
+                MessageShow();
                 ?>
                 <div class="Page">
                     <h2>Главная страница</h2>
                 </div>
             </div>
-            <?php Footer() ?>
+            <?php Footer(); ?>
         </div>
     </body>
 </html>

@@ -1,6 +1,6 @@
 <?php
 ULogin(1);
-Head('Профиль пользователя ' . $_SESSION['USER_LOGIN'])
+Head('Профиль пользователя ' . $_SESSION['USER_LOGIN']);
 ?>
 <body>
     <div class="wrapper">
@@ -8,7 +8,7 @@ Head('Профиль пользователя ' . $_SESSION['USER_LOGIN'])
         <div class="content">
             <?php
             Menu();
-            MessageShow()
+            MessageShow();
             ?>
             <div class="Page">
                 <?php echo "
@@ -23,7 +23,7 @@ Head('Профиль пользователя ' . $_SESSION['USER_LOGIN'])
                 ?>
             </div>
         </div>
-        <?php Footer() ?>
+        <?php Footer(); ?>
     </div>
 </body>
 </html>

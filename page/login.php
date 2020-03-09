@@ -3,14 +3,14 @@ if ($_POST['enter']) {
     echo 'Запрос...';
     exit;
 }
-Head('Вход') ?>
+Head('Вход'); ?>
 <body>
     <div class="wrapper">
         <div class="header"></div>
         <div class="content">
             <?php
             Menu();
-            MessageShow()
+            MessageShow();
             ?>
             <div class="Page">
                 <form method="POST" action="/login">
@@ -21,7 +21,7 @@ Head('Вход') ?>
                 </form>
             </div>
         </div>
-        <?php Footer() ?>
+        <?php Footer(); ?>
     </div>
 </body>
 </html>

@@ -4,6 +4,18 @@ include_once 'setting.php';
 session_start();
 $CONNECT = mysqli_connect(HOST, USER, PASS, DB);
 
+if ($_SESSION['USER_LOGIN_IN' != 1 and $_COOKIE['remember_user']]) {
+    $Row = mysqli_fetch_assoc(mysqli_query($CONNECT, "SELECT `id`,`name`,`regdate`,`email`,`country`,`avatar`
+ FROM `users` WHERE `password` = '$_COOKIE[remember_user]'"));
+    $_SESSION['USER_ID'] = $Row['id'];
+    $_SESSION['USER_NAME'] = $Row['name'];
+    $_SESSION['USER_REGDATE'] = $Row['regdate'];
+    $_SESSION['USER_EMAIL'] = $Row['email'];
+    $_SESSION['USER_COUNTRY'] = UserCountry($Row['country']);
+    $_SESSION['USER_AVATAR'] = $Row['avatar'];
+    $_SESSION['USER_LOGIN_IN'] = 1;
+}
+
 if ($_SERVER['REQUEST_URI'] == '/') {
     $Page = 'index';
     $Module = 'index';
@@ -22,21 +34,64 @@ if ($_SERVER['REQUEST_URI'] == '/') {
 
 if ($Page == 'index') {
     include('page/index.php');
-} else if ($Page == 'login') {
+} elseif ($Page == 'login') {
     include('page/login.php');
-} else if ($Page == 'register') {
+} elseif ($Page == 'register') {
     include('page/register.php');
-} else if ($Page == 'account') {
+} elseif ($Page == 'account') {
     include('form/account.php');
+} elseif ($Page == 'profile') {
+    include('page/profile.php');
+} elseif ($Page == 'restore') {
+    include('page/restore.php');
+}
+
+function ULogin($p1)
+{
+    if ($p1 <= 0 and $_SESSION['USER_LOGIN_IN'] != $p1) {
+        MessageSend(1, 'Данная страница доступна только для не зарегестрированных пользователей', '/');
+    } elseif ($_SESSION['USER_LOGIN_IN'] != $p1) {
+        MessageSend(1, 'Данная страница доступна только для зарегестрированных пользователей', '/');
+    }
+}
+
+function UserCountry($p1)
+{
+    if ($p1 == 0) {
+        return 'Страна не указана';
+    } elseif ($p1 == 1) {
+        return 'Украина';
+    } elseif ($p1 == 2) {
+        return 'Россия';
+    } elseif ($p1 == 3) {
+        return 'США';
+    } elseif ($p1 == 4) {
+        return 'Канада';
+    }
+}
+
+function RandomString($p1)
+{
+    $Char = '0123456789abcdefghijklmnopqrstuvwxyz';
+    for ($i = 0; $i < $p1; $i++) {
+        $String .= $Char[rand(0, strlen($Char) - 1)];
+    }
+    return $String;
+}
+
+function HideEmail($p1)
+{
+    $Explode = explode('@', $p1);
+    return $Explode[0] . '@******';
 }
 
 function MessageSend($p1, $p2, $p3 = '')
 {
     if ($p1 == 1) {
         $p1 = 'Ошибка';
-    } else if ($p1 == 2) {
+    } elseif ($p1 == 2) {
         $p1 = 'Подсказка';
-    } else if ($p1 == 3) {
+    } elseif ($p1 == 3) {
         $p1 = 'Информация';
     }
     $_SESSION['message'] = '<div class="MessageBlock"><b>' . $p1 . '</b>: ' . $p2 . '</div>';
@@ -80,9 +135,13 @@ function Head($p1)
 
 function Menu()
 {
-    echo '<div class="MenuHead"><a href="/"><div class="Menu">Главная</div></a>
-          <a href="/register"><div class="Menu">Регистрация</div></a>
-          <a href="/login"><div class="Menu">Вход</div></a></div>';
+    if ($_SESSION['USER_LOGIN_IN'] != 1) {
+        $Menu = '<a href="/register"><div class="Menu">Регистрация</div></a>
+          <a href="/login"><div class="Menu">Вход</div></a><a href="/restore"><div class="Menu">Восстановление пароля</div></a>';
+    } else {
+        $Menu = '<a href="/profile"><div class="Menu">Профиль</div></a>';
+    }
+    echo '<div class="MenuHead"><a href="/"><div class="Menu">Главная</div></a>' . $Menu . '</div>';
 }
 
 function Footer()

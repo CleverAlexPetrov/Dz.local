@@ -1,4 +1,6 @@
-<?php Head('Регистрация'); ?>
+<?php
+ULogin(0);
+Head('Регистрация'); ?>
 <body>
     <div class="wrapper">
         <div class="header"></div>
@@ -10,13 +12,13 @@
             <div class="Page">
                 <form method="POST" action="/account/register">
                     <br><input type="text" name="login" placeholder="Логин" maxlength="10" pattern="[A-Za-z-0-9]{3,10}"
-                               title="Не менее 3 и неболее 10 латынских символов или цифр." required>
+                               title="Не менее 3 и неболее 10 латинских символов или цифр." required>
                     <br><input type="email" name="email" placeholder="E-Mail" required>
                     <br><input type="password" name="password" placeholder="Пароль" maxlength="15"
-                               pattern="[A-Za-z-0-9]{5,15}" title="Не менее 5 и неболее 15 латынских символов или цифр."
+                               pattern="[A-Za-z-0-9]{5,15}" title="Не менее 5 и неболее 15 латинских символов или цифр."
                                required>
                     <br><input type="text" name="name" placeholder="Имя" maxlength="10" pattern="[A-Za-z-0-9]{4,10}"
-                               title="Не менее 4 и неболее 10 латынских символов или цифр." required>
+                               title="Не менее 4 и неболее 10 латинских символов или цифр." required>
                     <br><select size="1" name="country">
                         <option value="0">Страна...</option>
                         <option value="1">Украина</option>

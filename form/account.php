@@ -25,9 +25,9 @@ if ($Module == 'restore' and $_SESSION['RESTORE'] and substr($_SESSION['RESTORE'
 
 if ($Module == 'restore' and $Param['code']) {
 
-    $Row = mysqli_fetch_assoc(mysqli_query($CONNECT, "SELECT `login` FROM `users` WHERE `id` = " . str_replace(
-            md5('Corporation'), '', $Param['code'])));
-    if (!$Row['login']) {
+    $Row = mysqli_fetch_assoc(mysqli_query($CONNECT, "SELECT `email` FROM `users` WHERE `id` = " . str_replace(
+            md5($Row['email']), '', $Param['code'])));
+    if (!$Row['email']) {
         MessageSend(1, 'Не возможно восстановить пароль.','/login');
     }
     $Random = RandomString(15);
@@ -54,7 +54,7 @@ if ($Module == 'restore' and $_POST['enter']) {
     }
     mail($Row['email'], 'Dark Soul Corporation, восстановление пароля',
         'Ссылка для восстановления пароля: http://dz.local/account/restore/code/' .
-        md5('Corporation') . $Row['id'], 'From: dz.local');
+        md5($Row['email']) . $Row['id'], 'From: dz.local');
     $_SESSION['RESTORE'] = 'wait_' . $Row['email'];
     MessageSend(2, 'На ваш E-mail адресс <b>' . HideEmail($Row['email']) . '</b> отправленно сообщение с
  подтверждением смены пароля.');
@@ -86,7 +86,9 @@ if ($Module == 'register' and $_POST['enter']) {
     }
     mysqli_query($CONNECT, "INSERT INTO `users` VALUES (`id`, '$_POST[login]', '$_POST[password]', 
     '$_POST[name]', NOW(), '$_POST[email]', $_POST[country], 0, 0)");
-    $Code = substr(base64_encode($_POST['email']), 0, -1);
+
+    $Code=str_replace('=','',base64_encode($_POST['email']));
+
     mail($_POST['email'], 'Регистрация на сайте Dark Soul Corporation',
         'Ссылка для активации: http://dz.local/account/activate/code/' .
         substr($Code, -5) . substr($Code, 0, -5), 'From: dz.local');

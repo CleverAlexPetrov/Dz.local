@@ -105,3 +105,19 @@ select {
     width: 215px;
     height: 30px;
 }
+
+.Block{
+    border: 1px solid #e5e5e5;
+    background-color: #f6f6f6;
+    padding: 10px;
+    width: 815px;
+    height: 135px;
+    display: table;
+    line-height: 25px;
+}
+
+.ProfileB{
+    float: left;
+    width: 102px;
+    margin-top: -37px;
+}

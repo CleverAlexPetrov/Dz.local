@@ -10,16 +10,52 @@ if ($Module == 'logout' and $_SESSION['USER_LOGIN_IN'] == 1) {
     exit(header('Location: /login'));
 }
 
+if ($Module == 'edit' and $_POST['enter']) {
+
+    ULogin(1);
+    $_POST['oldpassword'] = FormChars($_POST['oldpassword']);
+    $_POST['newpassword'] = FormChars($_POST['newpassword']);
+    $_POST['name'] = FormChars($_POST['name']);
+    $_POST['country'] = FormChars($_POST['country']);
+
+    if ($_POST['oldpassword'] or $_POST['newpassword']) {
+        if (!$_POST['oldpassword']) {
+            MessageSend(2, 'Не указан старый пароль.');
+        }
+        if (!$_POST['newpassword']) {
+            MessageSend(2, 'Не указан новый пароль.');
+        }
+        if ($_SESSION['USER_PASSWORD'] != GenPass($_POST['oldpassword'], $_SESSION['USER_LOGIN'])) {
+            MessageSend(2, 'Старый пароль указан не верно.');
+        }
+        $Password = GenPass($_POST['newpassword'], $_SESSION['USER_LOGIN']);
+        mysqli_query($CONNECT, "UPDATE `users`  SET `password` = '$Password' WHERE `id` = '$_SESSION[USER_ID]'");
+        $_SESSION['USER_PASSWORD'] = $Password;
+    }
+
+    if ($_POST['name'] != $_SESSION['USER_NAME']) {
+        mysqli_query($CONNECT, "UPDATE `users`  SET `name` = '$_POST[name]' WHERE `id` = '$_SESSION[USER_ID]'");
+        $_SESSION['USER_NAME'] = $_POST['name'];
+    }
+
+    if (UserCountry($_POST['country']) != $_SESSION['USER_COUNTRY']) {
+        mysqli_query($CONNECT, "UPDATE `users`  SET `country` = '$_POST[country]' WHERE `id` = '$_SESSION[USER_ID]'");
+        $_SESSION['USER_COUNTRY'] = UserCountry($_POST['country']);
+    }
+
+    MessageSend(3, 'Данные изменены успешно.');
+}
+
 ULogin(0);
 
 if ($Module == 'restore' and !$Param['code'] and substr($_SESSION['RESTORE'], 0, 4) == 'wait') {
 
-    MessageSend(2, 'Вы уже отправили запрос на восстановление пароля. Проверте ваш E-mail адресс <b>' .
+    MessageSend(2, 'Вы уже отправили запрос на восстановление пароля. Проверьте ваш E-mail адрес <b>' .
         HideEmail(substr($_SESSION['RESTORE'], 5)) . '</b>');
 }
 if ($Module == 'restore' and $_SESSION['RESTORE'] and substr($_SESSION['RESTORE'], 0, 4) != 'wait') {
 
-    MessageSend(2, 'Пароль был изменнен. Для входа используйте ваш новый пароль <b>' .
+    MessageSend(2, 'Пароль был изменен. Для входа используйте ваш новый пароль <b>' .
         $_SESSION['RESTORE'] . '</b>.', '/login');
 }
 
@@ -28,14 +64,14 @@ if ($Module == 'restore' and $Param['code']) {
     $Row = mysqli_fetch_assoc(mysqli_query($CONNECT, "SELECT `email` FROM `users` WHERE `id` = " . str_replace(
             md5($Row['email']), '', $Param['code'])));
     if (!$Row['email']) {
-        MessageSend(1, 'Не возможно восстановить пароль.','/login');
+        MessageSend(1, 'Не возможно восстановить пароль.', '/login');
     }
     $Random = RandomString(15);
     $_SESSION['RESTORE'] = $Random;
     mysqli_query($CONNECT, "UPDATE `users`  SET `password` = '" . GenPass($Random, $Row['login']) .
         "' WHERE `login` = '$Row[login]'");
 
-    MessageSend(2, 'Пароль успешно изменнен. Для входа используйте ваш новый пароль <b>' . $Random . '</b>.', '/login');
+    MessageSend(2, 'Пароль успешно изменен. Для входа используйте ваш новый пароль <b>' . $Random . '</b>.', '/login');
 }
 
 if ($Module == 'restore' and $_POST['enter']) {
@@ -53,10 +89,10 @@ if ($Module == 'restore' and $_POST['enter']) {
         MessageSend(1, 'Такой пользователь не найден.');
     }
     mail($Row['email'], 'Dark Soul Corporation, восстановление пароля',
-        'Ссылка для восстановления пароля: http://dz.local/account/restore/code/' .
-        md5($Row['email']) . $Row['id'], 'From: dz.local');
+        'Ссылка для восстановления пароля: http://cleveralexpetrov.zzz.com.ua/account/restore/code/' .
+        md5($Row['email']) . $Row['id'], 'From: cleveralexpetrov@cleveralexpetrov.zzz.com.ua');
     $_SESSION['RESTORE'] = 'wait_' . $Row['email'];
-    MessageSend(2, 'На ваш E-mail адресс <b>' . HideEmail($Row['email']) . '</b> отправленно сообщение с
+    MessageSend(2, 'На ваш E-mail адрес <b>' . HideEmail($Row['email']) . '</b> отправлено сообщение с
  подтверждением смены пароля.');
 
 }
@@ -78,22 +114,23 @@ if ($Module == 'register' and $_POST['enter']) {
     }
     $Row = mysqli_fetch_assoc(mysqli_query($CONNECT, "SELECT `login` FROM `users` WHERE `login` = '$_POST[login]'"));
     if ($Row['login']) {
-        exit('Логин <b>' . $_POST['login'] . '</b> уже используеться.');
+        exit('Логин <b>' . $_POST['login'] . '</b> уже используется.');
     }
     $Row = mysqli_fetch_assoc(mysqli_query($CONNECT, "SELECT `email` FROM `users` WHERE `email` = '$_POST[email]'"));
     if ($Row['email']) {
-        exit('E-Mail <b>' . $_POST['email'] . '</b> уже используеться.');
+        exit('E-Mail <b>' . $_POST['email'] . '</b> уже используется.');
     }
     mysqli_query($CONNECT, "INSERT INTO `users` VALUES (`id`, '$_POST[login]', '$_POST[password]', 
     '$_POST[name]', NOW(), '$_POST[email]', $_POST[country], 0, 0)");
 
-    $Code=str_replace('=','',base64_encode($_POST['email']));
+    $Code = str_replace('=', '', base64_encode($_POST['email']));
 
     mail($_POST['email'], 'Регистрация на сайте Dark Soul Corporation',
-        'Ссылка для активации: http://dz.local/account/activate/code/' .
-        substr($Code, -5) . substr($Code, 0, -5), 'From: dz.local');
-    MessageSend(3, 'Регистрация акаунта успешно завершена. 
-        На указанный E-mail адрес <b>' . $_POST['email'] . '</b> отправленно письмо с подтверждением регистрации.');
+        'Ссылка для активации: http://cleveralexpetrov.zzz.com.ua/account/activate/code/' .
+        substr($Code, -5) . substr($Code, 0, -5),
+        'From: cleveralexpetrov@cleveralexpetrov.zzz.com.ua');
+    MessageSend(3, 'Регистрация аккаунта успешно завершена. 
+        На указанный E-mail адрес <b>' . $_POST['email'] . '</b> отправлено письмо с подтверждением регистрации.');
 
 } elseif ($Module == 'activate' and $Param['code']) {
 
@@ -127,10 +164,13 @@ if ($Module == 'register' and $_POST['enter']) {
         MessageSend(1, 'Не верный логин или пароль.');
     }
     if ($Row['active'] == 0) {
-        MessageSend(1, 'Аккаунт ползователя: <b>' . $_POST['login'] . '</b>, не подтвержден.');
+        MessageSend(1, 'Аккаунт пользователя: <b>' . $_POST['login'] . '</b>, не подтвержден.');
     }
-    $Row = mysqli_fetch_assoc(mysqli_query($CONNECT, "SELECT `id`,`name`,`regdate`,`email`,`country`,`avatar`
- FROM `users` WHERE `login` = '$_POST[login]'"));
+    $Row = mysqli_fetch_assoc(mysqli_query($CONNECT, "SELECT `id`,`name`,`regdate`,`email`,`country`,`avatar`,
+`password`,`login` FROM `users` WHERE `login` = '$_POST[login]'"));
+
+    $_SESSION['USER_LOGIN'] = $Row['login'];
+    $_SESSION['USER_PASSWORD'] = $Row['password'];
     $_SESSION['USER_ID'] = $Row['id'];
     $_SESSION['USER_NAME'] = $Row['name'];
     $_SESSION['USER_REGDATE'] = $Row['regdate'];

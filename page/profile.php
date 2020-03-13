@@ -23,7 +23,7 @@ Head('Профиль пользователя'); ?>
                     <br>Дата регистрации: ' . $_SESSION['USER_REGDATE'] . '
                     
                 </div>
-                <a href="/account/logout" class="button ProfileB">Выйти из аккаунта</a><br>
+                <a href="/account/logout" class="button ProfileB">Выйти</a><br>
     
                 <form method="POST" action="/account/edit">
                     <br><input type="password" name="oldpassword" placeholder="Старый пароль" maxlength="15"

@@ -120,5 +120,9 @@ select {
 .ProfileB{
     float: left;
     width: 102px;
-    margin-top: -37px;
+    margin-top: -36px;
+}
+
+.ProfileEdit{
+    margin-top: -5px;
 }
